@@ -70,7 +70,7 @@ RUN set -eux; \
 FROM alpine:3.22
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache python3 py3-pip py3-virtualenv ca-certificates bash curl unzip
+RUN apk add --no-cache python3 py3-pip py3-virtualenv ca-certificates bash curl git unzip
 
 COPY --from=builder \
   /usr/local/bin/ovhcloud \
