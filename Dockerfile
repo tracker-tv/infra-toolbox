@@ -11,7 +11,8 @@ ENV KUBECTL_VERSION=${KUBECTL_VERSION}
 ENV HELM_VERSION=${HELM_VERSION}
 ENV TERRAFORM_VERSION=${TERRAFORM_VERSION}
 
-RUN apt-get update && apt-get install -y \
+# hadolint ignore=DL3008
+RUN apt-get update && apt-get install -y --no-install-recommends \
 	curl \
 	git \
     zip \
@@ -19,29 +20,39 @@ RUN apt-get update && apt-get install -y \
 	jq \
     yq \
     docker.io \
+    ca-certificates \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL -o ovhcloud.tar.gz https://github.com/ovh/ovhcloud-cli/releases/download/${OVHCLOUD_CLI_VERSION}/ovhcloud-cli_Linux_$([ $(arch) = x86_64 ] && echo amd64 || echo arm64).tar.gz && \
+RUN set -eux; \
+    ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
+	curl -fsSL -o ovhcloud.tar.gz "https://github.com/ovh/ovhcloud-cli/releases/download/${OVHCLOUD_CLI_VERSION}/ovhcloud-cli_Linux_${ARCH}.tar.gz" && \
 	tar -xf ovhcloud.tar.gz && \
 	chmod +x ovhcloud && \
 	mv ovhcloud /usr/local/bin
 
-RUN	curl -LO https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/$([ $(arch) = x86_64 ] && echo amd64 || echo arm64)/kubectl && \
+RUN set -eux; \
+    ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
+	curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl" && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin
 
-RUN curl -fsSL -o helm.tar.gz https://get.helm.sh/helm-${HELM_VERSION}-linux-$([ $(arch) = x86_64 ] && echo amd64 || echo arm64).tar.gz && \
+RUN set -eux; \
+    ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
+	curl -fsSL -o helm.tar.gz "https://get.helm.sh/helm-${HELM_VERSION}-linux-${ARCH}.tar.gz" && \
     tar -xf helm.tar.gz && \
-    chmod +x linux-$([ $(arch) = x86_64 ] && echo amd64 || echo arm64)/helm && \
-    mv linux-$([ $(arch) = x86_64 ] && echo amd64 || echo arm64)/helm /usr/local/bin
+    chmod +x "linux-${ARCH}/helm" && \
+    mv "linux-${ARCH}/helm" /usr/local/bin
 
-RUN curl -fsSL -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_$([ $(arch) = x86_64 ] && echo amd64 || echo arm64).zip && \
+RUN set -eux; \
+    ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
+	curl -fsSL -o terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${ARCH}.zip" && \
     unzip terraform.zip && \
 	chmod +x terraform && \
 	mv terraform /usr/local/bin
 
+WORKDIR /opt
 COPY ./entrypoint.sh .
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /opt/entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/opt/entrypoint.sh"]
 
