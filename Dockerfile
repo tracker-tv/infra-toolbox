@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
-    ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
+    ARCH=$( [ "$(arch)" = x86_64 ] && echo x86_64 || echo arm64 ); \
 	curl -fsSL -o ovhcloud.tar.gz "https://github.com/ovh/ovhcloud-cli/releases/download/${OVHCLOUD_CLI_VERSION}/ovhcloud-cli_Linux_${ARCH}.tar.gz" && \
 	tar -xf ovhcloud.tar.gz && \
 	chmod +x ovhcloud && \
