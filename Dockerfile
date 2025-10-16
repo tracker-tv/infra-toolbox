@@ -1,9 +1,10 @@
 FROM ubuntu:24.04 AS builder
 
-ARG OVHCLOUD_CLI_VERSION=v0.5.0
-ARG KUBECTL_VERSION=v1.34.1
-ARG HELM_VERSION=v3.19.0
+ARG OVHCLOUD_CLI_VERSION=0.5.0
+ARG KUBECTL_VERSION=1.34.1
+ARG HELM_VERSION=3.19.0
 ARG TERRAFORM_VERSION=1.13.3
+ARG OPENTOFU_VERSION=1.10.6
 ARG GITHUB_CLI_VERSION=2.81.0
 ARG ANSIBLE_VERSION=12.0.0
 
@@ -12,6 +13,7 @@ ENV OVHCLOUD_CLI_VERSION=${OVHCLOUD_CLI_VERSION}
 ENV KUBECTL_VERSION=${KUBECTL_VERSION}
 ENV HELM_VERSION=${HELM_VERSION}
 ENV TERRAFORM_VERSION=${TERRAFORM_VERSION}
+ENV OPENTOFU_VERSION=${OPENTOFU_VERSION}
 ENV GITHUB_CLI_VERSION=${GITHUB_CLI_VERSION}
 ENV ANSIBLE_VERSION=${ANSIBLE_VERSION}
 
@@ -30,20 +32,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN set -eux; \
     ARCH=$( [ "$(arch)" = x86_64 ] && echo x86_64 || echo arm64 ); \
-	curl -fsSL -o ovhcloud.tar.gz "https://github.com/ovh/ovhcloud-cli/releases/download/${OVHCLOUD_CLI_VERSION}/ovhcloud-cli_Linux_${ARCH}.tar.gz" && \
+	curl -fsSL -o ovhcloud.tar.gz "https://github.com/ovh/ovhcloud-cli/releases/download/v${OVHCLOUD_CLI_VERSION}/ovhcloud-cli_Linux_${ARCH}.tar.gz" && \
 	tar -xf ovhcloud.tar.gz && \
 	chmod +x ovhcloud && \
 	mv ovhcloud /usr/local/bin
 
 RUN set -eux; \
     ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
-	curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl" && \
+	curl -LO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl" && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin
 
 RUN set -eux; \
     ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
-	curl -fsSL -o helm.tar.gz "https://get.helm.sh/helm-${HELM_VERSION}-linux-${ARCH}.tar.gz" && \
+	curl -fsSL -o helm.tar.gz "https://get.helm.sh/helm-v${HELM_VERSION}-linux-${ARCH}.tar.gz" && \
     tar --strip-components=1 -xf helm.tar.gz && \
     chmod +x helm && \
     mv helm /usr/local/bin
@@ -54,6 +56,13 @@ RUN set -eux; \
     unzip terraform.zip && \
 	chmod +x terraform && \
 	mv terraform /usr/local/bin
+
+RUN set -eux; \
+    ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
+	curl -fsSL -o tofu.tar.gz "https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_linux_${ARCH}.tar.gz" && \
+    tar -xf tofu.tar.gz && \
+	chmod +x tofu && \
+	mv tofu /usr/local/bin
 
 RUN set -eux; \
     ARCH=$( [ "$(arch)" = x86_64 ] && echo amd64 || echo arm64 ); \
@@ -77,6 +86,7 @@ COPY --from=builder \
   /usr/local/bin/kubectl \
   /usr/local/bin/helm \
   /usr/local/bin/terraform \
+  /usr/local/bin/tofu \
   /usr/local/bin/gh \
   /usr/local/bin/
 
