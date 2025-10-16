@@ -12,6 +12,7 @@ ARG TERRAFORM_VERSION=1.13.3
 ARG OPENTOFU_VERSION=1.10.6
 # renovate-gh-tag: depName=cli/cli
 ARG GITHUB_CLI_VERSION=2.81.0
+# renovate-pypi: depName=ansible
 ARG ANSIBLE_VERSION=12.0.0
 
 ENV DEBIAN_FRONTEND=noninteractive
