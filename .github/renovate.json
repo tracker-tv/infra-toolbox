@@ -5,7 +5,7 @@
   ],
   "dependencyDashboard": true,
   "semanticCommitType": "chore",
-  "prConcurrentLimit": 0,
+  "prConcurrentLimit": 1,
   "prHourlyLimit": 0,
   "rebaseWhen": "behind-base-branch",
   "schedule": "* 0-10 * * 1",
@@ -13,6 +13,14 @@
   "enabledManagers": [
     "custom.regex",
     "github-actions"
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["custom.regex", "github-actions"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "branch"
+    }
   ],
   "customManagers": [
     {
