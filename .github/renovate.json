@@ -24,8 +24,7 @@
         "#\\s*renovate-gh-release:\\s*depName=(?<depName>.*?)\\s.*?_VERSION\\s*=\\s*v?(?<currentValue>[0-9]+(?:\\.[0-9]+){1,3})"
 
       ],
-      "datasourceTemplate": "github-releases",
-      "ignoreUnstable": true
+      "datasourceTemplate": "github-releases"
     },
     {
       "customType": "regex",
@@ -35,8 +34,7 @@
       "matchStrings": [
         "#\\s*renovate-gh-tag:\\s*depName=(?<depName>.*?)\\s.*?_VERSION\\s*=\\s*v?(?<currentValue>[0-9]+(?:\\.[0-9]+){1,3})"
       ],
-      "datasourceTemplate": "github-tags",
-      "ignoreUnstable": true
+      "datasourceTemplate": "github-tags"
     }
   ]
 }
