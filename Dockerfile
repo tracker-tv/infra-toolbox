@@ -1,10 +1,13 @@
 FROM ubuntu:24.04 AS builder
 
+# renovate-gh-release: depName=ovh/ovhcloud-cli
 ARG OVHCLOUD_CLI_VERSION=0.5.0
 ARG KUBECTL_VERSION=1.34.1
 ARG HELM_VERSION=3.19.0
 ARG TERRAFORM_VERSION=1.13.3
+# renovate-gh-release: depName=opentofu/opentofu
 ARG OPENTOFU_VERSION=1.10.6
+# renovate-gh-release: depName=cli/cli
 ARG GITHUB_CLI_VERSION=2.81.0
 ARG ANSIBLE_VERSION=12.0.0
 
