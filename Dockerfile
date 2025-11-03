@@ -1,7 +1,7 @@
 FROM ubuntu:24.04 AS builder
 
 # renovate-gh-tag: depName=ovh/ovhcloud-cli
-ARG OVHCLOUD_CLI_VERSION=0.7.1
+ARG OVHCLOUD_CLI_VERSION=0.8.1
 # renovate-gh-tag: depName=kubernetes/kubernetes
 ARG KUBECTL_VERSION=1.34.1
 # renovate-gh-tag: depName=helm/helm
