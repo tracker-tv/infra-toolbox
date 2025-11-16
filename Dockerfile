@@ -1,7 +1,7 @@
 FROM ubuntu:24.04 AS builder
 
 # renovate-gh-tag: depName=ovh/ovhcloud-cli
-ARG OVHCLOUD_CLI_VERSION=0.7.0
+ARG OVHCLOUD_CLI_VERSION=0.8.1
 # renovate-gh-tag: depName=kubernetes/kubernetes
 ARG KUBECTL_VERSION=1.34.1
 # renovate-gh-tag: depName=helm/helm
@@ -9,11 +9,11 @@ ARG HELM_VERSION=3.19.0
 # renovate-gh-tag: depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.13.4
 # renovate-gh-tag: depName=opentofu/opentofu
-ARG OPENTOFU_VERSION=1.10.6
+ARG OPENTOFU_VERSION=1.10.7
 # renovate-gh-tag: depName=cli/cli
-ARG GITHUB_CLI_VERSION=2.82.0
+ARG GITHUB_CLI_VERSION=2.83.1
 # renovate-pypi: depName=ansible
-ARG ANSIBLE_VERSION=12.1.0
+ARG ANSIBLE_VERSION=12.2.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV OVHCLOUD_CLI_VERSION=${OVHCLOUD_CLI_VERSION}
