@@ -11,7 +11,7 @@ ARG TERRAFORM_VERSION=1.14.3
 # renovate-gh-tag: depName=opentofu/opentofu
 ARG OPENTOFU_VERSION=1.10.7
 # renovate-gh-tag: depName=cli/cli
-ARG GITHUB_CLI_VERSION=2.83.1
+ARG GITHUB_CLI_VERSION=2.83.2
 # renovate-pypi: depName=ansible
 ARG ANSIBLE_VERSION=13.1.0
 
